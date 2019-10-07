@@ -39,6 +39,12 @@ class ReviewResource(Resource):  # type: ignore
     @api.doc(id='get-review-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})  # noqa: E501
     @api.marshal_with(review_model)
     def get(self, reviewId):  # type: ignore
+        id_validation_errors = review_schema.validate({
+          'review_id': reviewId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[Review] = Review.query.filter_by(review_id=reviewId).first()  # noqa: E501
         if result is None:
             abort(404)
@@ -88,6 +94,12 @@ class ReviewResource(Resource):  # type: ignore
 
     @api.expect(review_model, validate=False)
     def patch(self, reviewId):  # type: ignore
+        id_validation_errors = review_schema.validate({
+          'review_id': reviewId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[Review] = Review.query.filter_by(review_id=reviewId)\
             .options(noload('*')).first()  # noqa: E501
 

@@ -38,6 +38,12 @@ class GenreResource(Resource):  # type: ignore
     @api.doc(id='get-genre-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})  # noqa: E501
     @api.marshal_with(genre_model)
     def get(self, genreId):  # type: ignore
+        id_validation_errors = genre_schema.validate({
+          'genre_id': genreId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[Genre] = Genre.query.filter_by(genre_id=genreId).first()  # noqa: E501
         if result is None:
             abort(404)
@@ -87,6 +93,12 @@ class GenreResource(Resource):  # type: ignore
 
     @api.expect(genre_model, validate=False)
     def patch(self, genreId):  # type: ignore
+        id_validation_errors = genre_schema.validate({
+          'genre_id': genreId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[Genre] = Genre.query.filter_by(genre_id=genreId)\
             .options(noload('*')).first()  # noqa: E501
 

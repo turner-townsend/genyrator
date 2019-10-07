@@ -40,6 +40,12 @@ class RelatedBookResource(Resource):  # type: ignore
     @api.doc(id='get-related_book-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})  # noqa: E501
     @api.marshal_with(related_book_model)
     def get(self, relatedBookUuid):  # type: ignore
+        id_validation_errors = related_book_schema.validate({
+          'related_book_uuid': relatedBookUuid
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[RelatedBook] = RelatedBook.query.filter_by(related_book_uuid=relatedBookUuid).first()  # noqa: E501
         if result is None:
             abort(404)
@@ -89,6 +95,12 @@ class RelatedBookResource(Resource):  # type: ignore
 
     @api.expect(related_book_model, validate=False)
     def patch(self, relatedBookUuid):  # type: ignore
+        id_validation_errors = related_book_schema.validate({
+          'related_book_uuid': relatedBookUuid
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[RelatedBook] = RelatedBook.query.filter_by(related_book_uuid=relatedBookUuid)\
             .options(noload('*')).first()  # noqa: E501
 
