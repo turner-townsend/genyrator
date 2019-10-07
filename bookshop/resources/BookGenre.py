@@ -40,6 +40,12 @@ class BookGenreResource(Resource):  # type: ignore
     @api.doc(id='get-book_genre-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})  # noqa: E501
     @api.marshal_with(book_genre_model)
     def get(self, bookGenreId):  # type: ignore
+        id_validation_errors = book_genre_schema.validate({
+          'book_genre_id': bookGenreId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[BookGenre] = BookGenre.query.filter_by(book_genre_id=bookGenreId).first()  # noqa: E501
         if result is None:
             abort(404)
@@ -89,6 +95,12 @@ class BookGenreResource(Resource):  # type: ignore
 
     @api.expect(book_genre_model, validate=False)
     def patch(self, bookGenreId):  # type: ignore
+        id_validation_errors = book_genre_schema.validate({
+          'book_genre_id': bookGenreId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[BookGenre] = BookGenre.query.filter_by(book_genre_id=bookGenreId)\
             .options(noload('*')).first()  # noqa: E501
 

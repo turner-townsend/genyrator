@@ -42,6 +42,12 @@ class AuthorResource(Resource):  # type: ignore
     @api.doc(id='get-author-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})  # noqa: E501
     @api.marshal_with(author_model)
     def get(self, authorId):  # type: ignore
+        id_validation_errors = author_schema.validate({
+          'author_id': authorId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[Author] = Author.query.filter_by(author_id=authorId).first()  # noqa: E501
         if result is None:
             abort(404)
@@ -91,6 +97,12 @@ class AuthorResource(Resource):  # type: ignore
 
     @api.expect(author_model, validate=False)
     def patch(self, authorId):  # type: ignore
+        id_validation_errors = author_schema.validate({
+          'author_id': authorId
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
         result: Optional[Author] = Author.query.filter_by(author_id=authorId)\
             .options(noload('*')).first()  # noqa: E501
 

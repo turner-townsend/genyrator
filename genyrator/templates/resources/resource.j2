@@ -45,7 +45,14 @@ api = Namespace('{{ entity.resource_namespace }}',
 {{ entity.plural }}_many_schema = {{ entity.class_name }}Schema(many=True)
 
 {%- macro find_element_by_id() -%}
-    result: Optional[{{ entity.class_name }}] = {{ entity.class_name }}.query.filter_by({# -#}
+
+        id_validation_errors = {{ entity.python_name }}_schema.validate({
+          '{{ entity.identifier_column.python_name }}': {{ entity.identifier_column.json_property_name }}
+        }, session=db.session, partial=True)
+        if id_validation_errors:
+            abort(404)
+
+        result: Optional[{{ entity.class_name }}] = {{ entity.class_name }}.query.filter_by({# -#}
 {{ entity.identifier_column.python_name }}={# -#}
 {{ entity.identifier_column.json_property_name }}){# -#}
 {%- endmacro -%}
