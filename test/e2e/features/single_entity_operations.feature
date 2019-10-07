@@ -27,6 +27,10 @@ Feature: performing operations on a simple schema
      When I make a "GET" request to "/book-store/1"
      Then I get http status "404"
 
+  Scenario: requesting an invalid identifier
+     When I make a "GET" request to "/book-store/invalid"
+     Then I get http status "404"
+
   Scenario: creating a new entity with correct data
      When I make a "PUT" request to "/book-store/3" with that json data
      Then I get http status "201"
