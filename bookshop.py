@@ -25,6 +25,7 @@ book_entity = create_entity(
             foreign_key_relationship=ForeignKeyRelationship(
                 target_entity='author',
                 target_entity_identifier_column_type=TypeOption.UUID,
+                sqlalchemy_options={'ondelete': '"CASCADE"'},
             ),
         ),
         create_column(

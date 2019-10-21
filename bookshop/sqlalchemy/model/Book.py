@@ -16,7 +16,7 @@ class Book(db.Model):  # type: ignore
     book_id =         db.Column(UUIDType, index=True, nullable=False)  # noqa: E501
     name =            db.Column(db.String, index=True, nullable=False)  # noqa: E501
     rating =          db.Column(db.Float, index=True, nullable=False)  # noqa: E501
-    author_id =       db.Column(db.BigInteger, db.ForeignKey('author.id'), nullable=True)  # noqa: E501
+    author_id =       db.Column(db.BigInteger, db.ForeignKey('author.id', ondelete="CASCADE"), nullable=True)  # noqa: E501
     collaborator_id = db.Column(db.BigInteger, db.ForeignKey('author.id'), nullable=True)  # noqa: E501
     published =       db.Column(db.Date, nullable=True)  # noqa: E501
     created =         db.Column(db.DateTime, server_default=text('CURRENT_TIMESTAMP'), nullable=True)  # noqa: E501
