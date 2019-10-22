@@ -30,13 +30,14 @@ class {{ template.entity.class_name }}(db.Model):  # type: ignore
     {{ column.python_name }} ={{ pad(column.python_name) }} db.Column(
     {%- if column.alias %}'{{ column.alias }}', {% endif -%}
     {{ column.sqlalchemy_type.value }}{# -#}
-    {%- if column.relationship is defined %}, db.ForeignKey('{{ column.relationship }}'){% endif %}
+    {%- if column.relationship is defined %}, db.ForeignKey('{{ column.relationship }}'{# -#}
+    {%- for option, value in column.foreign_key_sqlalchemy_options -%}
+    , {{ option }}={{ value }}
+    {%- endfor -%}){% endif %}
     {%- if column.index %}, index=True{% endif %}{# -#}
-    {%- if column.sqlalchemy_options -%}
-      {%- for option, value in column.sqlalchemy_options -%}
-      , {{ option }}={{ value }}
-      {%- endfor -%}
-    {%- endif -%}
+    {%- for option, value in column.sqlalchemy_options -%}
+    , {{ option }}={{ value }}
+    {%- endfor -%}
     , nullable={{ column.nullable | string }})  # noqa: E501
 {%- endfor %}
 

@@ -1,4 +1,4 @@
-from typing import Optional, Union, NamedTuple, List, Tuple, Dict, Type
+from typing import Optional, Union, List, Tuple, Dict, Type, Mapping
 import attr
 from genyrator.inflector import pythonize, to_class_name, to_json_case, humanize
 from genyrator.types import (
@@ -7,11 +7,12 @@ from genyrator.types import (
     type_option_to_restplus_type,
     type_option_to_faker_method)
 
-ForeignKeyRelationship = NamedTuple(
-    'ForeignKeyRelationship', [
-        ('target_entity',                        str),
-        ('target_entity_identifier_column_type', TypeOption), ]
-)
+
+@attr.s
+class ForeignKeyRelationship:
+    target_entity: str = attr.ib()
+    target_entity_identifier_column_type: TypeOption = attr.ib()
+    sqlalchemy_options: Mapping[str, str] = attr.ib(factory=dict)
 
 
 @attr.s
@@ -35,6 +36,7 @@ class Column(object):
 @attr.s
 class ForeignKey(Column):
     relationship:         str = attr.ib()
+    foreign_key_sqlalchemy_options: List[Tuple[str, str]] = attr.ib()
     target_restplus_type: str = attr.ib()
 
 
@@ -109,7 +111,7 @@ def create_column(
         "nullable":           nullable,
         "alias":              alias,
         "faker_method":       faker_method,
-        "sqlalchemy_options": [(key, value) for key, value in sqlalchemy_options.items()],
+        "sqlalchemy_options": list(sqlalchemy_options.items()),
     }
     if foreign_key_relationship is not None:
         args['relationship'] = '{}.{}'.format(
@@ -119,6 +121,7 @@ def create_column(
         args['target_restplus_type'] = type_option_to_restplus_type(
             foreign_key_relationship.target_entity_identifier_column_type
         )
+        args['foreign_key_sqlalchemy_options'] = list(foreign_key_relationship.sqlalchemy_options.items())
     return constructor(**args)  # type: ignore
 
 
