@@ -174,7 +174,7 @@ class ManyAuthorResource(Resource):  # type: ignore
         if isinstance(marshmallow_schema_or_errors, list):
             abort(400, marshmallow_schema_or_errors)
         if marshmallow_schema_or_errors.errors:
-            abort(400, marshmallow_schema_or_errors)
+            abort(400, python_dict_to_json_dict(marshmallow_schema_or_errors.errors))
 
         db.session.add(marshmallow_schema_or_errors.data)
         db.session.commit()
