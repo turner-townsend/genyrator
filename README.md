@@ -1,9 +1,9 @@
 # Genyrator
 
-A tool for generating a [Flask](http://flask.pocoo.org/) web app from an abstract
-definition. The app is based on [Flask-RESTPlus](https://flask-restplus.readthedocs.io/en/stable/),
+A tool for generating a [Flask](https://flask.palletsprojects.com/en/1.1.x/) web app from an abstract
+definition. The app is based on [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/),
 [Flask-Marshmallow](https://flask-marshmallow.readthedocs.io/en/latest/) and
-[Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/).
+[Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/).
 
 ## Generate an app
 
