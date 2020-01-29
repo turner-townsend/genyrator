@@ -1,4 +1,4 @@
-from flask_restplus import Api
+from flask_restx import Api
 {% for entity in template.entities -%}
 from {{ template.module_name }}.resources.{{ entity.class_name }} {# -#}
     import api as {{ entity.plural }}_api
