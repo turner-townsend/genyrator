@@ -2,7 +2,7 @@ import uuid
 from typing import Optional
 
 from flask import request, abort, url_for
-from flask_restplus import Resource, fields, Namespace
+from flask_restx import Resource, fields, Namespace
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import noload
 

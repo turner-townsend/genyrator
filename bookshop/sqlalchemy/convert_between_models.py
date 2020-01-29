@@ -1,7 +1,7 @@
 import importlib
 
 from sqlalchemy.ext.declarative import DeclarativeMeta
-from flask_restplus import Model
+from flask_restx import Model
 
 from bookshop.core import convert_case
 from bookshop.domain.types import DomainModel
