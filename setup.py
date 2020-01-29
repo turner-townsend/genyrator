@@ -18,10 +18,10 @@ with open('genyrator/__init__.py', 'rt', encoding='utf8') as f:
 setup(
     name='genyrator',
     version=version,
-    url='https://github.com/jumblesale/genyrator',
+    url='https://github.com/turner-townsend/genyrator',
     project_urls={
-        'Code': 'https://github.com/jumblesale/genyrator',
-        'Issue tracker': 'https://github.com/jumblesale/genyrator/issues',
+        'Code': 'https://github.com/turner-townsend/genyrator',
+        'Issue tracker': 'https://github.com/turner-townsend/genyrator/issues',
     },
     packages=find_packages(exclude=('test', 'test.*', 'bookshop', 'bookshop.*')),
     license='MIT',
@@ -38,8 +38,8 @@ setup(
 
     python_requires=">=3.6",
     install_requires=[
-        'attrs>=18.1',
+        'attrs>=19.3',
         'inflection>=0.3',
-        'sqlalchemy==1.3.0',
+        'sqlalchemy>=1.3',
     ],
 )
