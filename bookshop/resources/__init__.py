@@ -1,4 +1,4 @@
-from flask_restplus import Api
+from flask_restx import Api
 from bookshop.resources.Book import api as books_api
 from bookshop.resources.Author import api as authors_api
 from bookshop.resources.Review import api as reviews_api
