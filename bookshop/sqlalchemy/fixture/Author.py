@@ -1,3 +1,5 @@
+import uuid
+
 import factory
 
 from bookshop.sqlalchemy import db
@@ -9,5 +11,5 @@ class AuthorFactory(factory.alchemy.SQLAlchemyModelFactory):
         model = Author
         sqlalchemy_session = db.session
 
-    author_id = factory.Faker('uuid4')
+    author_id = uuid.uuid4()
     name = factory.Faker('pystr')
