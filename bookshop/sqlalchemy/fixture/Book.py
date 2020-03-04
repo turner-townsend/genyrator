@@ -1,3 +1,5 @@
+import uuid
+
 import factory
 
 from bookshop.sqlalchemy import db
@@ -9,6 +11,6 @@ class BookFactory(factory.alchemy.SQLAlchemyModelFactory):
         model = Book
         sqlalchemy_session = db.session
 
-    book_id = factory.Faker('uuid4')
+    book_id = uuid.uuid4()
     name = factory.Faker('pystr')
     rating = factory.Faker('pyfloat')
