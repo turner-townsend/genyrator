@@ -1,5 +1,3 @@
-import uuid
-
 import factory
 
 from bookshop.sqlalchemy import db
@@ -11,4 +9,4 @@ class RelatedBookFactory(factory.alchemy.SQLAlchemyModelFactory):
         model = RelatedBook
         sqlalchemy_session = db.session
 
-    related_book_uuid = uuid.uuid4()
+    related_book_uuid = factory.Faker('uuid4', cast_to=lambda x: x)

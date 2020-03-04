@@ -4,8 +4,8 @@ from genyrator.inflector import pythonize, to_class_name, to_json_case, humanize
 from genyrator.types import (
     SqlAlchemyTypeOption, PythonTypeOption, TypeOption, type_option_to_sqlalchemy_type,
     type_option_to_python_type, type_option_to_default_value, RestplusTypeOption,
-    type_option_to_restplus_type,
-    type_option_to_faker_method)
+    type_option_to_restplus_type, type_option_to_faker_method, type_option_to_faker_options
+)
 
 
 @attr.s
@@ -24,6 +24,7 @@ class Column(object):
     json_property_name: str =                   attr.ib()
     type_option:        TypeOption =            attr.ib()
     faker_method:       str =                   attr.ib()
+    faker_options:      str =                   attr.ib()
     sqlalchemy_type:    SqlAlchemyTypeOption =  attr.ib()
     python_type:        PythonTypeOption =      attr.ib()
     restplus_type:      RestplusTypeOption =    attr.ib()
@@ -55,6 +56,7 @@ def create_column(
         alias:                    Optional[str] = None,
         foreign_key_relationship: Optional[ForeignKeyRelationship] = None,
         faker_method:             Optional[str] = None,
+        faker_options:            Optional[str] = None,
         sqlalchemy_options:       Optional[Dict[str, str]] = None,
 ) -> Union[Column, IdentifierColumn, ForeignKey]:
     """Return a column to be attached to an entity
@@ -111,6 +113,7 @@ def create_column(
         "nullable":           nullable,
         "alias":              alias,
         "faker_method":       faker_method,
+        "faker_options":      faker_options,
         "sqlalchemy_options": list(sqlalchemy_options.items()),
     }
     if foreign_key_relationship is not None:
@@ -126,9 +129,10 @@ def create_column(
 
 
 def create_identifier_column(
-        name:         str,
-        type_option:  TypeOption,
-        faker_method: Optional[str] = None,
+        name:          str,
+        type_option:   TypeOption,
+        faker_method:  Optional[str] = None,
+        faker_options: Optional[str] = None,
 ) -> IdentifierColumn:
     """Return an identifier column for an entity
 
@@ -145,9 +149,10 @@ def create_identifier_column(
                       default.
     """
     faker_method = faker_method if faker_method is not None else type_option_to_faker_method(type_option)
+    faker_options = type_option_to_faker_options(type_option)
     column = create_column(
         name=name, type_option=type_option, index=True, nullable=False,
-        identifier=True, faker_method=faker_method,
+        identifier=True, faker_method=faker_method, faker_options=faker_options
     )
     assert isinstance(column, IdentifierColumn)
     return column

@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 from uuid import UUID
 
 
@@ -130,3 +130,10 @@ def type_option_to_faker_method(type_option: TypeOption) -> str:
         TypeOption.date:     'date_this_year',
         TypeOption.UUID:     'uuid4',
     }[type_option]
+
+
+def type_option_to_faker_options(type_option: TypeOption) -> Optional[str]:
+    if type_option == TypeOption.UUID:
+        return 'cast_to=lambda x: x'
+    else:
+        return None
