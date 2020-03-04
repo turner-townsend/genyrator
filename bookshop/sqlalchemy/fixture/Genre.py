@@ -1,5 +1,3 @@
-import uuid
-
 import factory
 
 from bookshop.sqlalchemy import db
@@ -11,4 +9,4 @@ class GenreFactory(factory.alchemy.SQLAlchemyModelFactory):
         model = Genre
         sqlalchemy_session = db.session
 
-    genre_id = uuid.uuid4()
+    genre_id = factory.Faker('uuid4', cast_to=lambda x: x)

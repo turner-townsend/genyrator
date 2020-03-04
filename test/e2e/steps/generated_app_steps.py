@@ -3,6 +3,7 @@ import importlib
 import json
 import random
 import string
+import uuid
 
 from behave import step, given, then, when
 from typing import List, Any, Optional
@@ -256,6 +257,7 @@ def step_impl(context, entity_name: str):
     fixture = getattr(fixture_module, f'{entity_name}Factory')
     with context.app.app_context():
         instance = fixture.create()
+        context.fixture_instance = instance
         context.generated_module.db.session.commit()
 
 
@@ -267,3 +269,17 @@ def step_impl(context, count: str, model_name: str):
     with context.app.app_context():
         result = model.query.all()
         assert_that(len(result), equal_to(int(count)))
+
+
+@then('the property "{property_name}" is type "{type_name}"')
+def step_impl(context, property_name: str, type_name: str):
+    with context.app.app_context():
+        context.generated_module.db.session.add(context.fixture_instance)
+        prop = getattr(context.fixture_instance, property_name)
+        types = {
+            'UUID': uuid.UUID,
+            'str': str,
+            'int': int,
+            'float': float,
+        }
+        assert isinstance(prop, types[type_name])

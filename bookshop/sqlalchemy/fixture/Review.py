@@ -1,5 +1,3 @@
-import uuid
-
 import factory
 
 from bookshop.sqlalchemy import db
@@ -11,5 +9,5 @@ class ReviewFactory(factory.alchemy.SQLAlchemyModelFactory):
         model = Review
         sqlalchemy_session = db.session
 
-    review_id = uuid.uuid4()
+    review_id = factory.Faker('uuid4', cast_to=lambda x: x)
     text = factory.Faker('pystr')
