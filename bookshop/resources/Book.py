@@ -144,30 +144,30 @@ class BookResource(Resource):  # type: ignore
 class ManyBookResource(Resource):  # type: ignore
     def get(self):
         query = Book.query
-        param_book_id = request.args.get('book_id')
+        param_book_id = request.args.getlist('book_id')
         if param_book_id:
-            query = query.filter_by(book_id=param_book_id)
-        param_name = request.args.get('name')
+            query = query.filter(Book.book_id.in_(param_book_id))
+        param_name = request.args.getlist('name')
         if param_name:
-            query = query.filter_by(name=param_name)
-        param_rating = request.args.get('rating')
+            query = query.filter(Book.name.in_(param_name))
+        param_rating = request.args.getlist('rating')
         if param_rating:
-            query = query.filter_by(rating=param_rating)
-        param_author_id = request.args.get('author_id')
+            query = query.filter(Book.rating.in_(param_rating))
+        param_author_id = request.args.getlist('author_id')
         if param_author_id:
-            query = query.filter_by(author_id=param_author_id)
-        param_collaborator_id = request.args.get('collaborator_id')
+            query = query.filter(Book.author_id.in_(param_author_id))
+        param_collaborator_id = request.args.getlist('collaborator_id')
         if param_collaborator_id:
-            query = query.filter_by(collaborator_id=param_collaborator_id)
-        param_published = request.args.get('published')
+            query = query.filter(Book.collaborator_id.in_(param_collaborator_id))
+        param_published = request.args.getlist('published')
         if param_published:
-            query = query.filter_by(published=param_published)
-        param_created = request.args.get('created')
+            query = query.filter(Book.published.in_(param_published))
+        param_created = request.args.getlist('created')
         if param_created:
-            query = query.filter_by(created=param_created)
-        param_updated = request.args.get('updated')
+            query = query.filter(Book.created.in_(param_created))
+        param_updated = request.args.getlist('updated')
         if param_updated:
-            query = query.filter_by(updated=param_updated)
+            query = query.filter(Book.updated.in_(param_updated))
         result = query.all()
         return python_dict_to_json_dict({"data": [model_to_dict(r) for r in result]})
 

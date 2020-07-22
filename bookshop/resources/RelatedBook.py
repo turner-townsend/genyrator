@@ -138,15 +138,15 @@ class RelatedBookResource(Resource):  # type: ignore
 class ManyRelatedBookResource(Resource):  # type: ignore
     def get(self):
         query = RelatedBook.query
-        param_related_book_uuid = request.args.get('related_book_uuid')
+        param_related_book_uuid = request.args.getlist('related_book_uuid')
         if param_related_book_uuid:
-            query = query.filter_by(related_book_uuid=param_related_book_uuid)
-        param_book1_id = request.args.get('book1_id')
+            query = query.filter(RelatedBook.related_book_uuid.in_(param_related_book_uuid))
+        param_book1_id = request.args.getlist('book1_id')
         if param_book1_id:
-            query = query.filter_by(book1_id=param_book1_id)
-        param_book2_id = request.args.get('book2_id')
+            query = query.filter(RelatedBook.book1_id.in_(param_book1_id))
+        param_book2_id = request.args.getlist('book2_id')
         if param_book2_id:
-            query = query.filter_by(book2_id=param_book2_id)
+            query = query.filter(RelatedBook.book2_id.in_(param_book2_id))
         result = query.all()
         return python_dict_to_json_dict({"data": [model_to_dict(r) for r in result]})
 

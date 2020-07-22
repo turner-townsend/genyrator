@@ -140,18 +140,18 @@ class AuthorResource(Resource):  # type: ignore
 class ManyAuthorResource(Resource):  # type: ignore
     def get(self):
         query = Author.query
-        param_author_id = request.args.get('author_id')
+        param_author_id = request.args.getlist('author_id')
         if param_author_id:
-            query = query.filter_by(author_id=param_author_id)
-        param_name = request.args.get('name')
+            query = query.filter(Author.author_id.in_(param_author_id))
+        param_name = request.args.getlist('name')
         if param_name:
-            query = query.filter_by(name=param_name)
-        param_favourite_author_id = request.args.get('favourite_author_id')
+            query = query.filter(Author.name.in_(param_name))
+        param_favourite_author_id = request.args.getlist('favourite_author_id')
         if param_favourite_author_id:
-            query = query.filter_by(favourite_author_id=param_favourite_author_id)
-        param_hated_author_id = request.args.get('hated_author_id')
+            query = query.filter(Author.favourite_author_id.in_(param_favourite_author_id))
+        param_hated_author_id = request.args.getlist('hated_author_id')
         if param_hated_author_id:
-            query = query.filter_by(hated_author_id=param_hated_author_id)
+            query = query.filter(Author.hated_author_id.in_(param_hated_author_id))
         result = query.all()
         return python_dict_to_json_dict({"data": [model_to_dict(r) for r in result]})
 

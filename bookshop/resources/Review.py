@@ -137,15 +137,15 @@ class ReviewResource(Resource):  # type: ignore
 class ManyReviewResource(Resource):  # type: ignore
     def get(self):
         query = Review.query
-        param_review_id = request.args.get('review_id')
+        param_review_id = request.args.getlist('review_id')
         if param_review_id:
-            query = query.filter_by(review_id=param_review_id)
-        param_text = request.args.get('text')
+            query = query.filter(Review.review_id.in_(param_review_id))
+        param_text = request.args.getlist('text')
         if param_text:
-            query = query.filter_by(text=param_text)
-        param_book_id = request.args.get('book_id')
+            query = query.filter(Review.text.in_(param_text))
+        param_book_id = request.args.getlist('book_id')
         if param_book_id:
-            query = query.filter_by(book_id=param_book_id)
+            query = query.filter(Review.book_id.in_(param_book_id))
         result = query.all()
         return python_dict_to_json_dict({"data": [model_to_dict(r) for r in result]})
 
