@@ -136,12 +136,12 @@ class GenreResource(Resource):  # type: ignore
 class ManyGenreResource(Resource):  # type: ignore
     def get(self):
         query = Genre.query
-        param_genre_id = request.args.get('genre_id')
+        param_genre_id = request.args.getlist('genre_id')
         if param_genre_id:
-            query = query.filter_by(genre_id=param_genre_id)
-        param_title = request.args.get('title')
+            query = query.filter(Genre.genre_id.in_(param_genre_id))
+        param_title = request.args.getlist('title')
         if param_title:
-            query = query.filter_by(title=param_title)
+            query = query.filter(Genre.title.in_(param_title))
         result = query.all()
         return python_dict_to_json_dict({"data": [model_to_dict(r) for r in result]})
 

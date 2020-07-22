@@ -167,9 +167,9 @@ class Many{{ entity.class_name }}Resource(Resource):  # type: ignore
         {%- if entity.supports_get_one %}
         query = {{ entity.class_name }}.query
         {%- for column in entity.columns %}
-        param_{{ column.python_name }} = request.args.get('{{ column.python_name }}')
+        param_{{ column.python_name }} = request.args.getlist('{{ column.python_name }}')
         if param_{{ column.python_name }}:
-            query = query.filter_by({{ column.python_name }}=param_{{ column.python_name }})
+            query = query.filter({{ entity.class_name }}.{{ column.python_name }}.in_(param_{{ column.python_name }}))
         {%- endfor %}
         result = query.all()
         return python_dict_to_json_dict({"data": [model_to_dict(r) for r in result]})

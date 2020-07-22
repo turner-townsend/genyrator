@@ -138,15 +138,15 @@ class BookGenreResource(Resource):  # type: ignore
 class ManyBookGenreResource(Resource):  # type: ignore
     def get(self):
         query = BookGenre.query
-        param_book_genre_id = request.args.get('book_genre_id')
+        param_book_genre_id = request.args.getlist('book_genre_id')
         if param_book_genre_id:
-            query = query.filter_by(book_genre_id=param_book_genre_id)
-        param_book_id = request.args.get('book_id')
+            query = query.filter(BookGenre.book_genre_id.in_(param_book_genre_id))
+        param_book_id = request.args.getlist('book_id')
         if param_book_id:
-            query = query.filter_by(book_id=param_book_id)
-        param_genre_id = request.args.get('genre_id')
+            query = query.filter(BookGenre.book_id.in_(param_book_id))
+        param_genre_id = request.args.getlist('genre_id')
         if param_genre_id:
-            query = query.filter_by(genre_id=param_genre_id)
+            query = query.filter(BookGenre.genre_id.in_(param_genre_id))
         result = query.all()
         return python_dict_to_json_dict({"data": [model_to_dict(r) for r in result]})
 

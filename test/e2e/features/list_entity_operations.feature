@@ -8,6 +8,9 @@ Feature: Listing and filtering entities
     When I list "book" filtered by "name=Peter Rabbit"
     Then I have "1" results
 
+  Scenario: Filtering my multiple names
+    When I list "book" filtered by "name=Peter Rabbit&name=Jungle Book"
+    Then I have "2" results
 
   Scenario: Filtering by rating
     When I list "book" filtered by "rating=3.2"
