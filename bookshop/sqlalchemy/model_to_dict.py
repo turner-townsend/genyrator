@@ -13,16 +13,9 @@ def model_to_dict(
 ) -> Mapping[str, Any]:
     if sqlalchemy_model is None:
         return {}
-    eager_relationships = {}
     domain_model = convert_sqlalchemy_model_to_domain_model(sqlalchemy_model)
     # always hydrate eager relationships
-    for relationship in domain_model.eager_relationships:
-        relationship_model = getattr(sqlalchemy_model, relationship)
-        relationship_dict = _recurse_on_model_or_list(
-            model_or_list=relationship_model,
-            return_immediately=True,
-        )
-        eager_relationships[relationship] = relationship_dict
+    eager_relationships = _hydrate_eager_relationships(domain_model, sqlalchemy_model)
     return _deep_merge(
         _model_to_dict(sqlalchemy_model=sqlalchemy_model,paths=paths),
         eager_relationships,
@@ -44,8 +37,11 @@ def _model_to_dict(
         domain_model=domain_model,
         sqlalchemy_model=sqlalchemy_model,
     )
-    if not paths or return_immediately is True:
-        return serialized_data
+    if not paths:  # we are at the end of the api_path
+        if return_immediately is True:
+            return serialized_data
+        eager_relationships = _hydrate_eager_relationships(domain_model, sqlalchemy_model)
+        return _deep_merge(serialized_data, eager_relationships)
     next_path = paths[0]
     next_relationship = getattr(sqlalchemy_model, next_path)
     next_key = next_path
@@ -95,6 +91,26 @@ def _recurse_on_model_or_list(
             paths=next_paths,
             return_immediately=return_immediately,
         )
+
+def _hydrate_eager_relationships(
+    domain_model: DomainModel,
+    sqlalchemy_model: DeclarativeMeta
+)-> Mapping[str, Any]:
+    """
+    Given a domain model and sqlalchemy model, returns a dictionary containing the eager relationships hydrated
+    under their relationship key
+    """
+    eager_relationships = {}
+    for relationship in domain_model.eager_relationships:  # hydrate eager relationships at the end of the api_path
+        relationship_model = getattr(sqlalchemy_model, relationship)
+        relationship_dict = _recurse_on_model_or_list(
+            model_or_list=relationship_model,
+            paths=[],
+            return_immediately=True,
+        )
+        eager_relationships[relationship] = relationship_dict
+    return eager_relationships
+
 
 
 def _deep_merge(dict1: Mapping[str, Any], dict2: Mapping[str, Any]) -> Mapping[str, Any]:

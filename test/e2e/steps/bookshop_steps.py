@@ -138,6 +138,16 @@ def step_impl(context, url: str):
     assert_that(genre['id'], equal_to(context.genre_entity['id']))
 
 
+@then('I can see a hydrated book in the response from "{url}"')
+def step_impl(context, url: str):
+    url = url.replace('{id}', context.book_entity['id'])
+    response = make_request(client=context.client, endpoint=url, method='get')
+    assert_that(response.status_code, equal_to(200))
+    data = json.loads(response.data)
+    author = data["author"]
+    assert_that(author["books"][0]["id"], equal_to(context.book_entity["id"]))
+
+
 @step('I patch that "{entity_name}" entity with that "{entity_id}" id')
 def step_impl(context, entity_name: str, entity_id: str):
     patch_id = getattr(context, f'{entity_id}_entity')['id']
