@@ -9,6 +9,13 @@ Feature: Posting new entities with foreign keys
      When I "put" a "book_genre" join entity
      Then I can see that genre in the response from "book/{id}/genres"
 
+  Scenario: Getting an eager relationship at the end of an API path
+    Given I put an example "book" entity
+      And I put an example "author" entity
+      And I put a book entity with a relationship to that author
+     When I get that book entity
+     Then I can see a hydrated book in the response from "book/{id}/author"
+
   Scenario: Putting a join entity where the join does not exist
     Given I put an incorrect "book_genre" join entity
      Then I get http status "400"

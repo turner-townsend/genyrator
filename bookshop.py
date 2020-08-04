@@ -119,6 +119,12 @@ book_entity = create_entity(
             ],
             route='genres',
         ),
+        create_api_path(
+            joined_entities=[
+                'author',
+            ],
+            route='author',
+        )
     ],
 )
 

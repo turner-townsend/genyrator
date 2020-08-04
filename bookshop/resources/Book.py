@@ -222,3 +222,27 @@ class Genre(Resource):  # type: ignore
         ))
 
         return result_dict
+
+
+@api.route('/book/<bookId>/author', endpoint='author')  # noqa: E501
+class Author(Resource):  # type: ignore
+    @api.doc(id='author', responses={401: 'Unauthorised', 404: 'Not Found'})  # noqa: E501
+    def get(self, bookId):  # type: ignore
+        result: Optional[Book] = Book \
+            .query \
+            .options(
+                joinedload('author')
+            ) \
+            .filter_by(
+                book_id=bookId) \
+            .first()  # noqa: E501
+        if result is None:
+            abort(404)
+        result_dict = python_dict_to_json_dict(model_to_dict(
+            sqlalchemy_model=result,
+            paths=[
+                'author',
+            ],
+        ))
+
+        return result_dict
