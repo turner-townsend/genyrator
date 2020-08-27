@@ -22,12 +22,14 @@ class BookGenre(db.Model):  # type: ignore
         'Book',
         lazy=False,
         uselist=False,
+        order_by='Book.id',
         foreign_keys=[book_id],
     )
     genre = db.relationship(
         'Genre',
         lazy=False,
         uselist=False,
+        order_by='Genre.id',
         foreign_keys=[genre_id],
     )
 

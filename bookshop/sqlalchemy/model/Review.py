@@ -22,6 +22,7 @@ class Review(db.Model):  # type: ignore
         'Book',
         lazy=False,
         uselist=False,
+        order_by='Book.id',
         foreign_keys=[book_id],
     )
 

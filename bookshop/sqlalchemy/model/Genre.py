@@ -21,6 +21,7 @@ class Genre(db.Model):  # type: ignore
         'Book',
         lazy=False,
         uselist=True,
+        order_by='Book.id',
         secondary='book_genre',
     )
 
