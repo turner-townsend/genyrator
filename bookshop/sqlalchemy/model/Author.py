@@ -23,30 +23,35 @@ class Author(db.Model):  # type: ignore
         'Book',
         lazy=False,
         uselist=True,
+        order_by='Book.id',
         foreign_keys='Book.author_id',
     )
     favourite_book = db.relationship(
         'Book',
         lazy=False,
         uselist=False,
+        order_by='Book.id',
         foreign_keys='Book.author_id',
     )
     collaborations = db.relationship(
         'Book',
         lazy=False,
         uselist=True,
+        order_by='Book.id',
         foreign_keys='Book.collaborator_id',
     )
     favourite_of = db.relationship(
         'Author',
         lazy=True,
         uselist=True,
+        order_by='Author.id',
         foreign_keys=[favourite_author_id],
     )
     favourite_author = db.relationship(
         'Author',
         lazy=True,
         uselist=False,
+        order_by='Author.id',
         primaryjoin=id==favourite_author_id,
         remote_side=[id],
     )
@@ -54,12 +59,14 @@ class Author(db.Model):  # type: ignore
         'Author',
         lazy=True,
         uselist=True,
+        order_by='Author.id',
         foreign_keys=[hated_author_id],
     )
     hated_author = db.relationship(
         'Author',
         lazy=True,
         uselist=False,
+        order_by='Author.id',
         primaryjoin=id==hated_author_id,
         remote_side=[id],
     )

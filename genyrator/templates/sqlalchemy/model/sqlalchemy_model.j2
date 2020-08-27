@@ -47,6 +47,7 @@ class {{ template.entity.class_name }}(db.Model):  # type: ignore
         '{{ relationship.target_entity_class_name }}',
         lazy={{ relationship.lazy | string }},
         uselist={{ relationship.join.value == 'to_many' | string }},
+        order_by='{{ relationship.target_entity_class_name | string }}.id',
     {%- if relationship.target_entity_class_name == template.entity.class_name -%}
       {%- if relationship.source_foreign_key_column_name %}
         primaryjoin=id=={{ relationship.source_foreign_key_column_name }},

@@ -27,29 +27,34 @@ class Book(db.Model):  # type: ignore
         'Author',
         lazy=False,
         uselist=False,
+        order_by='Author.id',
         foreign_keys=[author_id],
     )
     collaborator = db.relationship(
         'Author',
         lazy=False,
         uselist=False,
+        order_by='Author.id',
         foreign_keys=[collaborator_id],
     )
     reviews = db.relationship(
         'Review',
         lazy=True,
         uselist=True,
+        order_by='Review.id',
     )
     genre = db.relationship(
         'Genre',
         lazy=False,
         uselist=False,
+        order_by='Genre.id',
         secondary='book_genre',
     )
     related_books = db.relationship(
         'Book',
         lazy=True,
         uselist=True,
+        order_by='Book.id',
         secondary='related_book',
         primaryjoin='Book.id==RelatedBook.book1_id',
         secondaryjoin='Book.id==RelatedBook.book2_id',

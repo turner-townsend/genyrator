@@ -22,12 +22,14 @@ class RelatedBook(db.Model):  # type: ignore
         'Book',
         lazy=False,
         uselist=False,
+        order_by='Book.id',
         foreign_keys=[book1_id],
     )
     book2 = db.relationship(
         'Book',
         lazy=False,
         uselist=False,
+        order_by='Book.id',
         foreign_keys=[book2_id],
     )
 
