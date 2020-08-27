@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import Optional, Union
 import attr
 
 from genyrator.errors import GenyratorError
@@ -27,7 +27,7 @@ class Relationship(object):
     lazy:                           bool =           attr.ib()
     join:                           JoinOption =     attr.ib()
     secondary_join_name:            Optional[str] =  attr.ib()
-    passive_deletes:                Optional[bool] = attr.ib()
+    passive_deletes:                Optional[Union[bool, str]] = attr.ib()
 
 
 @attr.s
@@ -55,7 +55,7 @@ def create_relationship(
         target_foreign_key_column_name: Optional[str] = None,
         property_name:                  Optional[str] = None,
         secondary_join_name:            Optional[str] = None,
-        passive_deletes:                Optional[bool] = None
+        passive_deletes:                Optional[Union[bool, str]] = None
 ) -> Relationship:
     """Return a relationship between two entities
 
