@@ -13,20 +13,21 @@ class JoinOption(Enum):
 
 @attr.s
 class Relationship(object):
-    python_name:                    str =           attr.ib()
-    target_entity_class_name:       str =           attr.ib()
-    target_entity_python_name:      str =           attr.ib()
-    target_foreign_key_column_name: Optional[str] = attr.ib()
-    source_foreign_key_column_name: Optional[str] = attr.ib()
-    source_identifier_column_name:  str =           attr.ib()
-    property_name:                  str =           attr.ib()
-    json_property_name:             str =           attr.ib()
+    python_name:                    str =            attr.ib()
+    target_entity_class_name:       str =            attr.ib()
+    target_entity_python_name:      str =            attr.ib()
+    target_foreign_key_column_name: Optional[str] =  attr.ib()
+    source_foreign_key_column_name: Optional[str] =  attr.ib()
+    source_identifier_column_name:  str =            attr.ib()
+    property_name:                  str =            attr.ib()
+    json_property_name:             str =            attr.ib()
     # in the json request, what key will this appear under?
-    key_alias_in_json:              str =           attr.ib()
-    nullable:                       bool =          attr.ib()
-    lazy:                           bool =          attr.ib()
-    join:                           JoinOption =    attr.ib()
-    secondary_join_name:            Optional[str] = attr.ib()
+    key_alias_in_json:              str =            attr.ib()
+    nullable:                       bool =           attr.ib()
+    lazy:                           bool =           attr.ib()
+    join:                           JoinOption =     attr.ib()
+    secondary_join_name:            Optional[str] =  attr.ib()
+    passive_deletes:                Optional[bool] = attr.ib()
 
 
 @attr.s
@@ -54,6 +55,7 @@ def create_relationship(
         target_foreign_key_column_name: Optional[str] = None,
         property_name:                  Optional[str] = None,
         secondary_join_name:            Optional[str] = None,
+        passive_deletes:                Optional[bool] = None
 ) -> Relationship:
     """Return a relationship between two entities
 
@@ -95,6 +97,8 @@ def create_relationship(
                              intermediary join table when doing a many-to-many join
                              on a self-referential many-to-many relationship.
                              See: https://docs.sqlalchemy.org/en/latest/orm/join_conditions.html#self-referential-many-to-many-relationship
+
+        passive_deletes: Option to prevent SQLAlchemy from cascading to target objects on delete
     """
     if source_foreign_key_column_name is not None:
         if target_foreign_key_column_name is not None:
@@ -124,6 +128,7 @@ def create_relationship(
         lazy=lazy,
         join=join,
         secondary_join_name=secondary_join_name,
+        passive_deletes=passive_deletes
     )
     if join_table is None:
         properties = relationship.__dict__

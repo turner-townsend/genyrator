@@ -67,6 +67,9 @@ class {{ template.entity.class_name }}(db.Model):  # type: ignore
       {%- if relationship.__class__.__name__ == 'RelationshipWithJoinTable' %}
         secondary='{{ relationship.join_table }}',
       {%- endif %}
+      {%- if relationship.passive_deletes is not none %}
+        passive_deletes={{ relationship.passive_deletes }},
+      {%- endif %}
     {%- endif %}
     )
 {%- endfor %}
