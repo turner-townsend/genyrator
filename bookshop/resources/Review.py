@@ -55,9 +55,10 @@ class ReviewResource(Resource):  # type: ignore
 
     @api.doc(id='delete-review-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})
     def delete(self, reviewId):  # type: ignore
-        result: Optional[Review] = Review.query.filter_by(review_id=reviewId).delete()
-        if result != 1:
+        result: Optional[Review] = Review.query.filter_by(review_id=reviewId).first()
+        if result is None:
             abort(404)
+        db.session.delete(result)
         db.session.commit()
         return '', 204
 

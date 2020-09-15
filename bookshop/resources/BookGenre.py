@@ -56,9 +56,10 @@ class BookGenreResource(Resource):  # type: ignore
 
     @api.doc(id='delete-book_genre-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})
     def delete(self, bookGenreId):  # type: ignore
-        result: Optional[BookGenre] = BookGenre.query.filter_by(book_genre_id=bookGenreId).delete()
-        if result != 1:
+        result: Optional[BookGenre] = BookGenre.query.filter_by(book_genre_id=bookGenreId).first()
+        if result is None:
             abort(404)
+        db.session.delete(result)
         db.session.commit()
         return '', 204
 
