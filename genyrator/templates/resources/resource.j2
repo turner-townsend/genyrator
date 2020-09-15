@@ -82,9 +82,10 @@ class {{ entity.class_name }}Resource(Resource):  # type: ignore
         result: Optional[{{ entity.class_name }}] = {{ entity.class_name }}.query.filter_by({# -#}
 {{ entity.identifier_column.python_name }}={# -#}
 {{ entity.identifier_column.json_property_name }}){# -#}
-.delete()
-        if result != 1:
+.first()
+        if result is None:
             abort(404)
+        db.session.delete(result)
         db.session.commit()
         return '', 204
     {%- endif -%}{# delete_one method #}

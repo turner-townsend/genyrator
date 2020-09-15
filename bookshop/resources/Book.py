@@ -62,9 +62,10 @@ class BookResource(Resource):  # type: ignore
 
     @api.doc(id='delete-book-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})
     def delete(self, bookId):  # type: ignore
-        result: Optional[Book] = Book.query.filter_by(book_id=bookId).delete()
-        if result != 1:
+        result: Optional[Book] = Book.query.filter_by(book_id=bookId).first()
+        if result is None:
             abort(404)
+        db.session.delete(result)
         db.session.commit()
         return '', 204
 

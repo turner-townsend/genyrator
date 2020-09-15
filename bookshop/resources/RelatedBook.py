@@ -56,9 +56,10 @@ class RelatedBookResource(Resource):  # type: ignore
 
     @api.doc(id='delete-related_book-by-id', responses={401: 'Unauthorised', 404: 'Not Found'})
     def delete(self, relatedBookUuid):  # type: ignore
-        result: Optional[RelatedBook] = RelatedBook.query.filter_by(related_book_uuid=relatedBookUuid).delete()
-        if result != 1:
+        result: Optional[RelatedBook] = RelatedBook.query.filter_by(related_book_uuid=relatedBookUuid).first()
+        if result is None:
             abort(404)
+        db.session.delete(result)
         db.session.commit()
         return '', 204
 
