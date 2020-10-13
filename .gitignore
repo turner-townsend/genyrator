@@ -7,3 +7,4 @@ build/
 /dist/
 /genyrator.egg-info/
 /.mypy_cache/
+/venv/

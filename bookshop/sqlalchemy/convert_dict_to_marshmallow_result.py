@@ -1,6 +1,6 @@
 from typing import Optional, Union, List, Mapping, Any
 
-from flask_marshmallow.sqla import ModelSchema
+from marshmallow_sqlalchemy import SQLAlchemySchema as ModelSchema
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import noload
 

@@ -1,0 +1,17 @@
+-r ./base.txt
+behave==1.2.6
+Flask==1.1.2
+flask-marshmallow==0.14.0
+flask-restx==0.2.0
+Flask-SQLAlchemy==2.4.4
+marshmallow-sqlalchemy==0.23.1
+pycodestyle==2.6.0
+PyHamcrest==1.10.1
+python-dateutil==2.8.1
+twine==1.15.0
+mamba==0.11.1
+expects==0.9.0
+SQLAlchemy-Utils==0.36.8
+ipdb==0.13.4
+mypy==0.790
+flake8==3.8.4
