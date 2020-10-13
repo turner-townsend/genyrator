@@ -1,31 +1,31 @@
 
 deps:
-	pipenv install --dev
+	pip install -r requirements/development.txt
 
 lint: pycodestyle flake8 mypy
 
 pycodestyle:
-	pipenv run pycodestyle .
+	pycodestyle .
 
 flake8:
-	pipenv run flake8
+	flake8
 
 mypy:
-	pipenv run mypy genyrator
+	mypy genyrator
 
 test: bookshop-build mamba behave
 
 behave:
-	pipenv run behave --tags=-skip test/e2e 
+	behave --tags=-skip test/e2e 
 
 mamba:
-	pipenv run mamba test
+	mamba test
 
 pep8:
-	pipenv run pycodestyle genyrator
+	pycodestyle genyrator
 
 bookshop-build:
-	pipenv run python bookshop.py
+	python bookshop.py
 
 
 deploy: deploy-clean deploy-build deploy-deploy
@@ -35,9 +35,9 @@ deploy-clean:
 	rm -rf build/ dist/ genyrator.egg-info/
 
 deploy-build:
-	pipenv run python setup.py sdist bdist_wheel
+	python setup.py sdist bdist_wheel
 
 deploy-deploy:
-	pipenv run twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 .PHONY: deps test behave pep8 bookshop-build
