@@ -56,7 +56,9 @@ def create_template_config(
         ),
     ]
     fixtures = [
-        create_template(Template.Template, ['sqlalchemy', 'fixture', '__init__']),
+        create_template(Template.FixtureInit, ['sqlalchemy', 'fixture', '__init__'],
+                        imports=[Template.Import(e.class_name, [e.class_name]) for e in entities],
+                        module_name=module_name),
         *[create_template(
             Template.Fixture, ['sqlalchemy', 'fixture', 'fixture'], module_name=module_name,
             db_import_path=db_import_path, out_path=Template.OutPath((['sqlalchemy', 'fixture'], entity.class_name)),
