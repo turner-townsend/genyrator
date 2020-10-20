@@ -1,0 +1,4 @@
+# flake8: noqa
+{% for import in template.imports|sort(attribute='module_name') -%}
+from {{ template.module_name }}.sqlalchemy.fixture.{{ import.module_name }} import {% for import in import.imports %}{{ import }}Factory{% endfor %}
+{% endfor %}

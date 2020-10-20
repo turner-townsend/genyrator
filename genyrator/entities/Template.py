@@ -147,6 +147,12 @@ class ConvertDictToMarshmallow(Template):
 
 
 @attr.s
+class FixtureInit(Template):
+    module_name:    str =          attr.ib()
+    imports:        List[Import] = attr.ib()
+
+
+@attr.s
 class Fixture(Template):
     db_import_path: str = attr.ib()
     module_name: str =    attr.ib()
