@@ -10,7 +10,7 @@ class {{ entity.class_name }}Factory(factory.alchemy.SQLAlchemyModelFactory):
         model = {{ entity.class_name }}
         sqlalchemy_session = db.session
 
-    {{ entity.identifier_column.python_name }} = factory.Faker('{{ entity.identifier_column.faker_method }}', {{ entity.identifier_column.faker_options if entity.identifier_column.faker_options }})
+    {{ entity.identifier_column.python_name }} = factory.Faker('{{ entity.identifier_column.faker_method }}'{% if entity.identifier_column.faker_options %}, {{ entity.identifier_column.faker_options }}{% endif %})
     {%- for column in entity.columns %}
         {%- if column.python_name != entity.identifier_column.python_name and
                column.faker_method is not none %}
