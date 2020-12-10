@@ -56,7 +56,7 @@ def create_relationship(
         target_foreign_key_column_name: Optional[str] = None,
         property_name:                  Optional[str] = None,
         secondary_join_name:            Optional[str] = None,
-        passive_deletes:                Optional[Union[bool, str]] = None
+        passive_deletes:                Optional[Union[bool, str]] = None,
         cascade:                        Optional[str] = None
 ) -> Relationship:
     """Return a relationship between two entities
