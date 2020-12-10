@@ -74,7 +74,7 @@ class {{ template.entity.class_name }}(db.Model):  # type: ignore
         passive_deletes={{ relationship.passive_deletes }},
       {%- endif %}
       {%- if relationship.cascade is not none %}
-        cascade={{ relationship.cascade }},
+        cascade='{{ relationship.cascade }}',
       {%- endif %}
     {%- endif %}
     )
