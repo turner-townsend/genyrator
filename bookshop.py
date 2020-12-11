@@ -211,6 +211,7 @@ author_entity = create_entity(
             lazy=False,
             join=JoinOption.to_many,
             property_name='books',
+            cascade='all',
         ),
         create_relationship(
             target_entity_class_name='Book',

@@ -25,6 +25,7 @@ class Author(db.Model):  # type: ignore
         uselist=True,
         order_by='Book.id',
         foreign_keys='Book.author_id',
+        cascade='all',
     )
     favourite_book = db.relationship(
         'Book',
