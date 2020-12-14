@@ -28,6 +28,7 @@ class Relationship(object):
     join:                           JoinOption =     attr.ib()
     secondary_join_name:            Optional[str] =  attr.ib()
     passive_deletes:                Optional[Union[bool, str]] = attr.ib()
+    cascade:                        Optional[str] =  attr.ib()
 
 
 @attr.s
@@ -55,7 +56,8 @@ def create_relationship(
         target_foreign_key_column_name: Optional[str] = None,
         property_name:                  Optional[str] = None,
         secondary_join_name:            Optional[str] = None,
-        passive_deletes:                Optional[Union[bool, str]] = None
+        passive_deletes:                Optional[Union[bool, str]] = None,
+        cascade:                        Optional[str] = None
 ) -> Relationship:
     """Return a relationship between two entities
 
@@ -99,6 +101,9 @@ def create_relationship(
                              See: https://docs.sqlalchemy.org/en/latest/orm/join_conditions.html#self-referential-many-to-many-relationship
 
         passive_deletes: Option to prevent SQLAlchemy from cascading to target objects on delete.  Valid options are True|False|'all'
+
+        cascade: SQLAlchemy ORM Cascading option.  See: https://docs.sqlalchemy.org/en/14/orm/cascades.html
+
     """
     if source_foreign_key_column_name is not None:
         if target_foreign_key_column_name is not None:
@@ -131,7 +136,8 @@ def create_relationship(
         lazy=lazy,
         join=join,
         secondary_join_name=secondary_join_name,
-        passive_deletes=passive_deletes
+        passive_deletes=passive_deletes,
+        cascade=cascade,
     )
     if join_table is None:
         properties = relationship.__dict__
