@@ -68,14 +68,14 @@ class {{ template.entity.class_name }}(db.Model):  # type: ignore
       {%- if relationship.__class__.__name__ == 'RelationshipWithJoinTable' %}
         secondary='{{ relationship.join_table }}',
       {%- endif %}
-      {%- if relationship.passive_deletes == 'all' %}
+    {%- endif %}
+    {%- if relationship.passive_deletes == 'all' %}
         passive_deletes='all',
-      {%- elif relationship.passive_deletes is not none %}
+    {%- elif relationship.passive_deletes is not none %}
         passive_deletes={{ relationship.passive_deletes }},
-      {%- endif %}
-      {%- if relationship.cascade is not none %}
+    {%- endif %}
+    {%- if relationship.cascade is not none %}
         cascade='{{ relationship.cascade }}',
-      {%- endif %}
     {%- endif %}
     )
 {%- endfor %}
