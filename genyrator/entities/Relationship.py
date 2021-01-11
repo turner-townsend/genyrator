@@ -29,6 +29,7 @@ class Relationship(object):
     secondary_join_name:            Optional[str] =  attr.ib()
     passive_deletes:                Optional[Union[bool, str]] = attr.ib()
     cascade:                        Optional[str] =  attr.ib()
+    post_update:                    bool =           attr.ib()
 
 
 @attr.s
@@ -57,7 +58,8 @@ def create_relationship(
         property_name:                  Optional[str] = None,
         secondary_join_name:            Optional[str] = None,
         passive_deletes:                Optional[Union[bool, str]] = None,
-        cascade:                        Optional[str] = None
+        cascade:                        Optional[str] = None,
+        post_update:                    bool = False,
 ) -> Relationship:
     """Return a relationship between two entities
 
@@ -104,6 +106,9 @@ def create_relationship(
 
         cascade: SQLAlchemy ORM Cascading option.  See: https://docs.sqlalchemy.org/en/14/orm/cascades.html
 
+        post_update: Set this to have sqlalchemy set relationships after create or before delete.  Useful for items
+                     with circular relationships.  See: https://docs.sqlalchemy.org/en/14/orm/relationship_persistence.html
+
     """
     if source_foreign_key_column_name is not None:
         if target_foreign_key_column_name is not None:
@@ -138,6 +143,7 @@ def create_relationship(
         secondary_join_name=secondary_join_name,
         passive_deletes=passive_deletes,
         cascade=cascade,
+        post_update=post_update,
     )
     if join_table is None:
         properties = relationship.__dict__
